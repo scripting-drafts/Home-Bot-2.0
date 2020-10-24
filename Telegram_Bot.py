@@ -33,7 +33,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-LIST_OF_ADMINS = [19419361]
+LIST_OF_ADMINS = ['UNQUOTED USER IDs']
 
 def restricted(func):
     @wraps(func)
@@ -66,7 +66,7 @@ def button(update, context):
 
 
 def main():
-    updater = Updater("1131730173:AAHpE0dGatPvV8GcWqxETC_nS4EWpcGR6iA", use_context=True)
+    updater = Updater("TOKEN", use_context=True)
 
     updater.dispatcher.add_handler(CommandHandler('start', start))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
