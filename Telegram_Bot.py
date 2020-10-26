@@ -22,7 +22,7 @@ profile.set_preference('browser.fullscreen.animateUp', 0)
 profile.update_preferences()
 
 mouse.position = (9999, 9999)
-driver = webdriver.Firefox(profile, executable_path=r'C:\Users\flatline\geckodriver')
+driver = webdriver.Firefox()
 driver.implicitly_wait(10)
 keyboard.press(pynput.keyboard.Key.f11)
 keyboard.release(pynput.keyboard.Key.f11)
