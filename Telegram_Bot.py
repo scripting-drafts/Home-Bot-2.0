@@ -47,6 +47,7 @@ def restricted(func):
 
 @restricted
 def start(update, context):
+    '''DHT11/DHT22'''
     keyboard = [
         [
             InlineKeyboardButton("Temperature", callback_data=driver.find_element_by_id('temperature').text + '°C'),
