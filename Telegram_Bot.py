@@ -26,7 +26,7 @@ driver = webdriver.Firefox(profile)
 driver.implicitly_wait(10)
 keyboard.press(pynput.keyboard.Key.f11)
 keyboard.release(pynput.keyboard.Key.f11)
-driver.get('http://192.168.1.176')
+driver.get('http://192.168.1.33')
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO

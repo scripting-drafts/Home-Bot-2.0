@@ -3,8 +3,11 @@
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 
-const char* ssid = "REPLACE_WITH_YOUR_SSID";
-const char* password = "REPLACE_WITH_YOUR_PASSWORD";
+const char* ssid = "REPLACE";
+const char* password = "REPLACE";
+
+// Power through GPIO not 3v3
+const int DHTPOWER = 33;
 
 #define DHTPIN 27     // Digital pin connected to the DHT sensor
 #define DHTTYPE    DHT11     // DHT 11
@@ -121,6 +124,9 @@ String processor(const String& var){
 void setup(){
   // Serial port for debugging purposes
   Serial.begin(115200);
+
+  pinMode(DHTPOWER, OUTPUT); // Set the pin as an output
+  digitalWrite(DHTPOWER, HIGH); // Set as DHT power source
 
   dht.begin();
   
