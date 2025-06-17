@@ -12,6 +12,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 LIST_OF_ADMINS = [19419361]
+TOKEN = '449394451:AAF70wCzhZer4EfSzvMyLXTs5yL1WsH8O1M'
 
 def restricted(func):
     @wraps(func)
@@ -45,7 +46,7 @@ def button(update, context):
 
 
 def main():
-    updater = Updater("TOKEN", use_context=True)
+    updater = Updater(TOKEN)
 
     updater.dispatcher.add_handler(CommandHandler('start', start))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))

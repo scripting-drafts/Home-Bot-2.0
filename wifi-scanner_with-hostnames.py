@@ -1,5 +1,6 @@
 import time
 import socket
+import threading
 from scapy.all import ARP, Ether, srp
 from colorama import Fore, Style, init
 
@@ -16,12 +17,23 @@ def scan_network(subnet):
     for _, received in result:
         ip = received.psrc
         mac = received.hwsrc
+        devices[mac] = {"ip": ip, "hostname": "Resolving..."}
+    return devices
+
+def resolve_hostnames(devices):
+    """Try to resolve hostnames in the background."""
+    def resolver(mac, ip):
         try:
             hostname = socket.gethostbyaddr(ip)[0]
         except:
             hostname = "Unknown"
-        devices[mac] = {"ip": ip, "hostname": hostname}
-    return devices
+        devices[mac]["hostname"] = hostname
+
+    for mac, info in devices.items():
+        if info["hostname"] == "Resolving...":
+            thread = threading.Thread(target=resolver, args=(mac, info["ip"]))
+            thread.daemon = True
+            thread.start()
 
 def display_devices(devices):
     print("\n📡 Current Devices on Network:")
@@ -41,11 +53,13 @@ def monitor_network(subnet, interval=10):
     print(f"🌐 Monitoring devices on {subnet} every {interval} seconds...\n")
 
     known_devices = scan_network(subnet)
+    resolve_hostnames(known_devices)
     display_devices(known_devices)
 
     try:
         while True:
             current_devices = scan_network(subnet)
+            resolve_hostnames(current_devices)
 
             new_macs = current_devices.keys() - known_devices.keys()
             for mac in new_macs:
@@ -61,5 +75,5 @@ def monitor_network(subnet, interval=10):
         print("\n👋 Monitoring stopped.")
 
 if __name__ == "__main__":
-    subnet = "192.168.1.0/24"  # Set your actual subnet
-    monitor_network(subnet, interval=10)  # Fast monitoring interval
+    subnet = "192.168.1.0/24"  # Set your local subnet
+    monitor_network(subnet, interval=10)
