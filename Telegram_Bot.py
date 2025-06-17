@@ -3,34 +3,34 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 import pynput.keyboard
 import pynput.mouse
-# from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
-# from selenium.webdriver.firefox.options import Options
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.firefox.options import Options
 import random
 from functools import wraps
 
-# keyboard = pynput.keyboard.Controller()
-# mouse = pynput.mouse.Controller()
+keyboard = pynput.keyboard.Controller()
+mouse = pynput.mouse.Controller()
 
-# options = Options()
-# options.add_argument('--headless')
-# options.set_preference('dom.webnotifications.enabled', False)
-# options.set_preference('dom.push.enabled', False)
-# options.set_preference('dom.webdriver.enabled', False)
-# options.set_preference('useAutomationExtension', False)
-# options.set_preference('privacy.trackingprotection.enabled', True)
+options = Options()
+options.add_argument('--headless')
+options.set_preference('dom.webnotifications.enabled', False)
+options.set_preference('dom.push.enabled', False)
+options.set_preference('dom.webdriver.enabled', False)
+options.set_preference('useAutomationExtension', False)
+options.set_preference('privacy.trackingprotection.enabled', True)
 
-# options.set_preference('browser.cache.disk.enable', False)
-# options.set_preference('browser.cache.memory.enable', False)
-# options.set_preference('browser.cache.offline.enable', False)
-# options.set_preference('network.http.use-cache', False)
+options.set_preference('browser.cache.disk.enable', False)
+options.set_preference('browser.cache.memory.enable', False)
+options.set_preference('browser.cache.offline.enable', False)
+options.set_preference('network.http.use-cache', False)
 
-# mouse.position = (9999, 9999)
-# driver = webdriver.Firefox(options=options)
-# driver.implicitly_wait(10)
-# keyboard.press(pynput.keyboard.Key.f11)
-# keyboard.release(pynput.keyboard.Key.f11)
-# driver.get('http://192.168.1.33')
+mouse.position = (9999, 9999)
+driver = webdriver.Firefox(options=options)
+driver.implicitly_wait(10)
+keyboard.press(pynput.keyboard.Key.f11)
+keyboard.release(pynput.keyboard.Key.f11)
+driver.get('http://192.168.1.33')
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -53,6 +53,10 @@ def restricted(func):
 def start(update, context):
     '''DHT11/DHT22'''
     keyboard = [
+        [
+            InlineKeyboardButton("Temperature", callback_data=driver.find_element(By.ID, 'temperature').text + '°C'),
+            InlineKeyboardButton("Humidity", callback_data=driver.find_element(By.ID, 'humidity').text + '%'),
+        ],
         [InlineKeyboardButton("Flip coin", callback_data=random.choice(['heads', 'tails']))],
     ]
 
