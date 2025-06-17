@@ -1,39 +1,16 @@
 import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
-import pynput.keyboard
-import pynput.mouse
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 import random
 from functools import wraps
-
-keyboard = pynput.keyboard.Controller()
-mouse = pynput.mouse.Controller()
-
-profile = webdriver.FirefoxProfile()
-profile.set_preference('dom.webnotifications.enabled', False)
-profile.set_preference('dom.push.enabled', False)
-profile.set_preference('dom.webdriver.enabled', False)
-profile.set_preference('useAutomationExtension', False)
-profile.set_preference('privacy.trackingprotection.enabled', True)
-profile.set_preference('browser.fullscreen.autohide', True)
-profile.set_preference('browser.fullscreen.animateUp', 0)
-profile.update_preferences()
-
-mouse.position = (9999, 9999)
-driver = webdriver.Firefox(profile)
-driver.implicitly_wait(10)
-keyboard.press(pynput.keyboard.Key.f11)
-keyboard.release(pynput.keyboard.Key.f11)
-driver.get('http://192.168.1.33')
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
 )
 logger = logging.getLogger(__name__)
 
-LIST_OF_ADMINS = ['UNQUOTED USER IDs']
+LIST_OF_ADMINS = [19419361]
+TOKEN = '449394451:AAF70wCzhZer4EfSzvMyLXTs5yL1WsH8O1M'
 
 def restricted(func):
     @wraps(func)
@@ -49,10 +26,10 @@ def restricted(func):
 def start(update, context):
     '''DHT11/DHT22'''
     keyboard = [
-        [
-            InlineKeyboardButton("Temperature", callback_data=driver.find_element_by_id('temperature').text + '°C'),
-            InlineKeyboardButton("Humidity", callback_data=driver.find_element_by_id('humidity').text + '%'),
-        ],
+        # [
+        #     InlineKeyboardButton("Temperature", callback_data=driver.find_element(By.ID, 'temperature').text + '°C'),
+        #     InlineKeyboardButton("Humidity", callback_data=driver.find_element(By.ID, 'humidity').text + '%'),
+        # ],
         [InlineKeyboardButton("Flip coin", callback_data=random.choice(['heads', 'tails']))],
     ]
 
@@ -67,7 +44,7 @@ def button(update, context):
 
 
 def main():
-    updater = Updater("TOKEN", use_context=True)
+    updater = Updater(TOKEN, use_context=True)
 
     updater.dispatcher.add_handler(CommandHandler('start', start))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
