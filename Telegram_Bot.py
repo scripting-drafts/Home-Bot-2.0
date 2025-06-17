@@ -1,8 +1,6 @@
 import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
-# import pynput.keyboard
-# import pynput.mouse
 import random
 from functools import wraps
 
